@@ -125,6 +125,7 @@ public class Window extends JFrame {
 		sl_eval.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				txt_parameter.setVisible(true);
+				lbl_parameter.setVisible(true);
 				seleccion = 3;
 				lbl_parameter.setText("Desired Function Result");
 			}
@@ -176,7 +177,6 @@ public class Window extends JFrame {
 					case 1:
 						
 						int iter = Integer.parseInt(txt_parameter.getText());
-						System.out.println(iter);
 						fun.iteraciones(iter,regs, model);
 						break;
 					case 2:
@@ -185,7 +185,6 @@ public class Window extends JFrame {
 						break;
 					case 3:												
 						double res = Double.parseDouble(txt_parameter.getText());
-						System.out.println(res);
 						fun.funResult(res, regs, model);
 						break;
 					

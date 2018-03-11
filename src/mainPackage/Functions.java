@@ -3,7 +3,7 @@ package mainPackage;
 import javax.swing.table.DefaultTableModel;
 
 public class Functions{
-	double valorx,limit1,bisec,limit2,errAbs,errRel;
+	double valorx,limit1,bisec,limit2,errAbs,errRel,errorel;
 	
 		
 	public double valorx(double valor1,double valor2) {
@@ -35,7 +35,6 @@ public class Functions{
 			valorx = valorx(limit1,limit2);
 			bisec = biseccion(valorx);			
 			errAbs = Math.abs(errorAbs(valorx,valory));
-			System.out.println(errAbs+"  "+valorx);
 			model.addRow(new Object[] {
 					i+1,limit1,limit2,valorx,bisec,errAbs,errorRel(errAbs,valorx)
 					});
@@ -48,43 +47,20 @@ public class Functions{
 		}				
 	}
 	
-	public void funResult(double result,Registro regs,DefaultTableModel model) {
-		model.setNumRows(0);
-		double valory = 0;
-		bisec = 1000000;
-		System.out.println(Math.abs(result - bisec));
-		for(int i = 0;Math.abs(result - bisec) > 0.000001;i++) {
-			limit1 = regs.getLimiteMenor();
-			limit2 = regs.getLimiteMayor();
-			valorx = valorx(limit1,limit2);
-			bisec = biseccion(valorx);
-			errAbs = Math.abs(errorAbs(valorx,valory));
-			System.out.println(errAbs+"  "+valorx);
-			model.addRow(new Object[] {
-					i+1,limit1,limit2,valorx,bisec,errAbs,errorRel(errAbs,valorx)
-					});
-			if(bisec > 0) {
-				regs.setLimiteMayor(valorx);
-			}else {
-				regs.setLimiteMenor(valorx);
-			}	
-			valory = valorx; 
-		}				
-	}
+	
 	public void errResult(double err,Registro regs,DefaultTableModel model) {
 		model.setNumRows(0);
 		double valory = 0;
-			errRel=1000000;
-			System.out.println(Math.abs(err - errRel));
-		for(int i = 0;Math.abs(err - errRel) > 0.000001;i++) {
+		int i = 0;
+		do {	
 			limit1 = regs.getLimiteMenor();
 			limit2 = regs.getLimiteMayor();
 			valorx = valorx(limit1,limit2);
 			bisec = biseccion(valorx);			
 			errAbs = Math.abs(errorAbs(valorx,valory));
-			System.out.println(errAbs+"  "+valorx);
+			errorel = errorRel(errAbs,valorx);
 			model.addRow(new Object[] {
-					i+1,limit1,limit2,valorx,bisec,errAbs,errorRel(errAbs,valorx)
+					i+1,limit1,limit2,valorx,bisec,errAbs,errorel
 					});
 			if(bisec > 0) {
 				regs.setLimiteMayor(valorx);
@@ -92,7 +68,30 @@ public class Functions{
 				regs.setLimiteMenor(valorx);
 			}	
 			valory = valorx; 
-		}				
+		}while(err < errorel);				
+	}
+	
+	public void funResult(double result,Registro regs,DefaultTableModel model) {
+		model.setNumRows(0);
+		double valory = 0;
+		int i = 0;
+		do {
+			limit1 = regs.getLimiteMenor();
+			limit2 = regs.getLimiteMayor();
+			valorx = valorx(limit1,limit2);
+			bisec = Math.abs(biseccion(valorx));
+			errAbs = Math.abs(errorAbs(valorx,valory));
+			errorel = errorRel(errAbs,valorx);
+			model.addRow(new Object[] {
+					i+1,limit1,limit2,valorx,Math.abs(bisec),errAbs,errorel
+					});
+			if(bisec > 0) {
+				regs.setLimiteMayor(valorx);
+			}else {
+				regs.setLimiteMenor(valorx);
+			}	
+			valory = valorx; 
+		}while(result < bisec );	
 	}
 	
 	
